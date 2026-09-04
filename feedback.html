@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обратная связь | Старший Футарк</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .feedback-page {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feedback-page h1 {
+            font-size: 36px;
+            color: #c9a050;
+            letter-spacing: 4px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .feedback-page .subtitle {
+            text-align: center;
+            color: #b8ab9a;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            margin-bottom: 35px;
+            line-height: 1.8;
+        }
+
+        /* ===== КАРТОЧКА С ССЫЛКОЙ НА ТЕЛЕГРАМ ===== */
+        .telegram-card {
+            background: rgba(20, 20, 35, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 20px;
+            padding: 50px 30px;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .telegram-card:hover {
+            border-color: rgba(201, 160, 80, 0.2);
+            box-shadow: 0 10px 40px rgba(201, 160, 80, 0.05);
+        }
+
+        .telegram-card .icon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .telegram-card h2 {
+            color: #e8ddd0;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .telegram-card p {
+            color: #b8ab9a;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            max-width: 500px;
+            margin: 0 auto 25px;
+        }
+
+        .telegram-btn {
+            display: inline-block;
+            padding: 16px 50px;
+            background: #0088cc;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .telegram-btn:hover {
+            background: #006699;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3);
+        }
+
+        .telegram-btn .tg-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 22px;
+        }
+
+        .feedback-page .rune-signature {
+            text-align: center;
+            font-size: 28px;
+            letter-spacing: 8px;
+            color: #c9a050;
+            opacity: 0.3;
+            margin-top: 40px;
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 768px) {
+            .feedback-page h1 {
+                font-size: 28px;
+            }
+
+            .telegram-card {
+                padding: 35px 20px;
+            }
+
+            .telegram-card .icon {
+                font-size: 48px;
+            }
+
+            .telegram-btn {
+                padding: 14px 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feedback-page h1 {
+                font-size: 22px;
+            }
+
+            .telegram-card h2 {
+                font-size: 20px;
+            }
+
+            .telegram-card p {
+                font-size: 14px;
+            }
+
+            .telegram-btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== ШАПКА ===== -->
+        <header>
+            <div class="logo">
+                ᛝᚲᚷᛉᚠᚨᚱ
+                <span>Старший Футарк · 24 руны</span>
+            </div>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="index.html#runes">Руны</a>
+                <a href="gods.html">Боги</a>
+                <a href="mifolgi.html">Мифология</a>
+                <a href="rune-horoscope.html">Гороскоп</a>
+                <a href="feedback.html">Обратная связь</a>
+                <a href="about.html">О сайте</a>
+            </nav>
+        </header>
+
+        <!-- ===== СТРАНИЦА ОБРАТНОЙ СВЯЗИ ===== -->
+        <section class="feedback-page">
+            <h1>✦ Обратная связь ✦</h1>
+            <p class="subtitle">
+                Ваши вопросы, предложения и идеи помогут сделать сайт лучше.<br>
+                Напишите нам в Telegram — мы всегда на связи ✦
+            </p>
+
+            <!-- ===== КАРТОЧКА С ТЕЛЕГРАМ ===== -->
+            <div class="telegram-card">
+                <span class="icon">✉️</span>
+                <h2>Напишите нам в Telegram</h2>
+                <p>
+                    Задайте вопрос, оставьте предложение или просто поделитесь впечатлениями.<br>
+                    Мы читаем каждое сообщение и отвечаем на них.
+                </p>
+                <a href="https://t.me/FutharkRunes" target="_blank" class="telegram-btn">
+                    <span class="tg-icon">✈️</span> Перейти в Telegram
+                </a>
+                <div style="margin-top: 20px; font-size: 13px; color: #6a5f50; font-style: italic;">
+                    Наш канал: @FutharkRunes
+                </div>
+            </div>
+
+            <div class="rune-signature">
+                ᚲᛃᚨᛉᚷᚠᚱ
+            </div>
+        </section>
+
+        <!-- ===== ПОДВАЛ ===== -->
+        <footer>
+            <p>ᛝᚲᚷᛉᚠᚨᚱ · 24 руны Старшего Футарка</p>
+            <p style="margin-top: 8px;">
+                <a href="index.html">Главная</a> ·
+                <a href="about.html">О сайте</a>
+            </p>
+            <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">
+                © 2026 · ᚲᛃᚨᛉᚷᚠᚱ Сделано с душой и мудростью
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

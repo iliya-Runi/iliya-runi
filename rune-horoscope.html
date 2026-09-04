@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рунический гороскоп | Старший Футарк</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ ГОРОСКОПА ===== */
+        .horoscope-page {
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .horoscope-page h1 {
+            font-size: 36px;
+            color: #c9a050;
+            letter-spacing: 4px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .horoscope-page .subtitle {
+            text-align: center;
+            color: #b8ab9a;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            margin-bottom: 35px;
+            line-height: 1.8;
+        }
+
+        /* ===== ФОРМА ===== */
+        .horoscope-form {
+            background: rgba(20, 20, 35, 0.5);
+            border: 1px solid rgba(201, 160, 80, 0.08);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .horoscope-form label {
+            display: block;
+            color: #d4c9b8;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .horoscope-form input {
+            padding: 14px 20px;
+            border: 2px solid rgba(201, 160, 80, 0.15);
+            border-radius: 12px;
+            background: rgba(10, 10, 20, 0.5);
+            color: #d4c9b8;
+            font-size: 18px;
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            width: 100%;
+            max-width: 280px;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .horoscope-form input:focus {
+            border-color: #c9a050;
+            box-shadow: 0 0 30px rgba(201, 160, 80, 0.05);
+        }
+
+        .horoscope-form button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 45px;
+            background: rgba(201, 160, 80, 0.1);
+            border: 1px solid rgba(201, 160, 80, 0.25);
+            border-radius: 30px;
+            color: #e8c85a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .horoscope-form button:hover {
+            background: rgba(201, 160, 80, 0.2);
+            border-color: #c9a050;
+            box-shadow: 0 0 30px rgba(201, 160, 80, 0.05);
+        }
+
+        /* ===== РЕЗУЛЬТАТ ===== */
+        .horoscope-result {
+            display: none;
+            background: rgba(20, 20, 35, 0.6);
+            border: 1px solid rgba(201, 160, 80, 0.12);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .horoscope-result.show {
+            display: block;
+        }
+
+        .horoscope-result .rune-display {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .horoscope-result .rune-display .symbol {
+            font-size: 80px;
+            color: #c9a050;
+            display: block;
+            text-shadow: 0 0 40px rgba(201, 160, 80, 0.15);
+        }
+
+        .horoscope-result .rune-display .name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e8ddd0;
+            letter-spacing: 4px;
+            margin-top: 5px;
+        }
+
+        .horoscope-result .rune-display .name-en {
+            font-size: 16px;
+            color: #6a5f50;
+            letter-spacing: 3px;
+        }
+
+        .horoscope-result .rune-display .att {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 20px;
+            border: 1px solid rgba(201, 160, 80, 0.2);
+            border-radius: 30px;
+            font-size: 12px;
+            color: #c9a050;
+            letter-spacing: 2px;
+        }
+
+        .horoscope-result .meaning-block {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(201, 160, 80, 0.08);
+        }
+
+        .horoscope-result .meaning-block h3 {
+            color: #c9a050;
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .horoscope-result .meaning-block p {
+            color: #b8ab9a;
+            font-size: 15px;
+            line-height: 1.9;
+            font-family: 'Georgia', serif;
+        }
+
+        .horoscope-result .meaning-block .keywords {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .horoscope-result .meaning-block .keywords span {
+            background: rgba(201, 160, 80, 0.08);
+            border: 1px solid rgba(201, 160, 80, 0.1);
+            border-radius: 20px;
+            padding: 4px 16px;
+            font-size: 12px;
+            color: #c9a050;
+            letter-spacing: 1px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .horoscope-result .link-to-rune {
+            display: inline-block;
+            margin-top: 20px;
+            color: #c9a050;
+            text-decoration: none;
+            border: 1px solid rgba(201, 160, 80, 0.2);
+            padding: 10px 30px;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .horoscope-result .link-to-rune:hover {
+            background: rgba(201, 160, 80, 0.1);
+            border-color: #c9a050;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== АДАПТАЦИЯ ===== */
+        @media (max-width: 768px) {
+            .horoscope-page h1 {
+                font-size: 28px;
+            }
+
+            .horoscope-form {
+                padding: 25px 20px;
+            }
+
+            .horoscope-form input {
+                max-width: 100%;
+            }
+
+            .horoscope-result .rune-display .symbol {
+                font-size: 60px;
+            }
+
+            .horoscope-result .rune-display .name {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .horoscope-page h1 {
+                font-size: 22px;
+            }
+
+            .horoscope-result .rune-display .symbol {
+                font-size: 48px;
+            }
+
+            .horoscope-result .rune-display .name {
+                font-size: 22px;
+            }
+
+            .horoscope-result .meaning-block p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== ШАПКА ===== -->
+        <header>
+            <div class="logo">
+                ᛝᚲᚷᛉᚠᚨᚱ
+                <span>Старший Футарк · 24 руны</span>
+            </div>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="index.html#runes">Руны</a>
+                <a href="gods.html">Боги</a>
+                <a href="mifolgi.html">Мифология</a>
+                <a href="rune-horoscope.html">Гороскоп</a>
+                <a href="about.html">О сайте</a>
+            </nav>
+        </header>
+
+        <!-- ===== СТРАНИЦА ГОРОСКОПА ===== -->
+        <section class="horoscope-page">
+
+            <h1>✦ Рунический гороскоп ✦</h1>
+            <p class="subtitle">
+                В скандинавской традиции каждому дню рождения соответствует своя руна.<br>
+                Введи свою дату рождения — и узнай, какая руна ведёт тебя по жизни.
+            </p>
+
+            <!-- ===== ФОРМА ===== -->
+            <div class="horoscope-form">
+                <label for="birthdate">📅 Введи дату рождения</label>
+                <input type="date" id="birthdate" max="2026-12-31" min="1900-01-01">
+                <br>
+                <button id="showHoroscope">✦ Узнать свою руну ✦</button>
+            </div>
+
+            <!-- ===== РЕЗУЛЬТАТ ===== -->
+            <div class="horoscope-result" id="result">
+                <div class="rune-display">
+                    <span class="symbol" id="resultSymbol">ᚠ</span>
+                    <div class="name" id="resultName">Феху</div>
+                    <div class="name-en" id="resultNameEn">Fehu</div>
+                    <span class="att" id="resultAtt">Первый атт · Фрейр</span>
+                </div>
+
+                <div class="meaning-block">
+                    <h3>✦ Значение</h3>
+                    <p id="resultMeaning">Текст значения...</p>
+                    <div class="keywords" id="resultKeywords">
+                        <span>Ключевое слово 1</span>
+                        <span>Ключевое слово 2</span>
+                        <span>Ключевое слово 3</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#" id="resultLink" class="link-to-rune">✦ Подробнее о руне ✦</a>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== ПОДВАЛ ===== -->
+        <footer>
+            <p>ᛝᚲᚷᛉᚠᚨᚱ · 24 руны Старшего Футарка</p>
+            <p style="margin-top: 8px;">
+                <a href="index.html">Главная</a> ·
+                <a href="rune-horoscope.html">Гороскоп</a> ·
+                <a href="about.html">О сайте</a>
+            </p>
+            <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">
+                © 2026 · ᚲᛃᚨᛉᚷᚠᚱ Сделано с душой и мудростью
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ============================================================
+        // ===== ДАННЫЕ РУН ДЛЯ ГОРОСКОПА =====
+        // ============================================================
+
+        const runeData = {
+            'ᚠ': {
+                name: 'Феху',
+                nameEn: 'Fehu',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Феху — руна богатства и изобилия. Она наделяет человека энергией созидания, способностью создавать и приумножать. Люди-Феху — прирождённые предприниматели и творцы, они умеют превращать идеи в реальность и щедро делиться с миром.',
+                keywords: ['Богатство', 'Созидание', 'Изобилие', 'Успех'],
+                link: 'rune-fechu.html'
+            },
+            'ᚢ': {
+                name: 'Уруз',
+                nameEn: 'Uruz',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Уруз — руна первобытной силы и выносливости. Люди-Уруз обладают огромной внутренней мощью, они выносливы, упрямы и всегда добиваются поставленных целей. Их энергия неиссякаема, они вдохновляют окружающих своей стойкостью.',
+                keywords: ['Сила', 'Мощь', 'Стойкость', 'Преодоление'],
+                link: 'rune-uruz.html'
+            },
+            'ᚦ': {
+                name: 'Турисаз',
+                nameEn: 'Thurisaz',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Турисаз — руна защиты и преодоления препятствий. Люди-Турисаз — прирождённые защитники, они всегда готовы отстоять свои интересы и интересы близких. Они не боятся конфликтов и умеют ставить границы.',
+                keywords: ['Защита', 'Препятствие', 'Молот Тора', 'Отражение негатива'],
+                link: 'rune-thurisaz.html'
+            },
+            'ᚨ': {
+                name: 'Ансуз',
+                nameEn: 'Ansuz',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Ансуз — руна мудрости и знания. Люди-Ансуз — прирождённые учителя и наставники. Они обладают даром красноречия, любят делиться знаниями и всегда стремятся к истине. Их главная сила — в слове и мудрости.',
+                keywords: ['Мудрость', 'Знание', 'Вдохновение', 'Ясность ума'],
+                link: 'rune-ansuz.html'
+            },
+            'ᚱ': {
+                name: 'Райдо',
+                nameEn: 'Raido',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Райдо — руна пути и путешествий. Люди-Райдо — вечные странники, они постоянно в движении, ищут новые горизонты и не боятся перемен. Их жизнь — это путь, полный открытий и приключений.',
+                keywords: ['Путь', 'Путешествие', 'Перемены', 'Направление'],
+                link: 'rune-raido.html'
+            },
+            'ᚲ': {
+                name: 'Кеназ',
+                nameEn: 'Kenaz',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Кеназ — руна огня и творчества. Люди-Кеназ — творческие личности, они видят мир иначе, чем другие. Их внутренний свет помогает им находить нестандартные решения и вдохновлять окружающих.',
+                keywords: ['Факел', 'Творчество', 'Огонь', 'Вдохновение'],
+                link: 'rune-kenaz.html'
+            },
+            'ᚷ': {
+                name: 'Гебо',
+                nameEn: 'Gebo',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Гебо — руна дара и партнёрства. Люди-Гебо — мастера гармоничных отношений. Они умеют давать и принимать, создавать равноправные союзы и находить баланс в любых ситуациях.',
+                keywords: ['Дар', 'Партнёрство', 'Равновесие', 'Союз'],
+                link: 'rune-gebo.html'
+            },
+            'ᚹ': {
+                name: 'Вуньо',
+                nameEn: 'Wunjo',
+                att: 'Первый атт · Фрейр',
+                meaning: 'Вуньо — руна радости и успеха. Люди-Вуньо — оптимисты, они умеют радоваться жизни и приносить радость другим. Их светлая энергия притягивает удачу и успех.',
+                keywords: ['Радость', 'Успех', 'Свет', 'Исполнение'],
+                link: 'rune-wunjo.html'
+            },
+            'ᚺ': {
+                name: 'Хагалаз',
+                nameEn: 'Hagalaz',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Хагалаз — руна разрушения и очищения. Люди-Хагалаз не боятся перемен, даже если они болезненны. Они знают, что через кризис приходит обновление, и всегда готовы начать жизнь с чистого листа.',
+                keywords: ['Град', 'Разрушение', 'Очищение', 'Перемены'],
+                link: 'rune-hagalaz.html'
+            },
+            'ᚾ': {
+                name: 'Наутиз',
+                nameEn: 'Nauthiz',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Наутиз — руна нужды и терпения. Люди-Наутиз умеют преодолевать трудности и становиться сильнее в испытаниях. Они знают, что настоящая сила рождается в преодолении.',
+                keywords: ['Нужда', 'Препятствие', 'Терпение', 'Внутренняя сила'],
+                link: 'rune-nauthiz.html'
+            },
+            'ᛁ': {
+                name: 'Иса',
+                nameEn: 'Isa',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Иса — руна льда и остановки. Люди-Иса — мастера паузы. Они умеют ждать, сохранять энергию и не торопить события. Их терпение — это их главная сила.',
+                keywords: ['Лёд', 'Заморозка', 'Остановка', 'Сохранение'],
+                link: 'rune-isa.html'
+            },
+            'ᛃ': {
+                name: 'Йера',
+                nameEn: 'Jera',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Йера — руна урожая и завершения циклов. Люди-Йера верят в справедливость и закон причин и следствий. Они знают, что всё имеет свои сроки, и умеют ждать своего часа.',
+                keywords: ['Урожай', 'Год', 'Цикл', 'Справедливость'],
+                link: 'rune-jera.html'
+            },
+            'ᛇ': {
+                name: 'Эйваз',
+                nameEn: 'Eihwaz',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Эйваз — руна тиса и защиты. Люди-Эйваз — надёжная опора для других. Они устойчивы в любых жизненных бурях и умеют сохранять равновесие в самые сложные моменты.',
+                keywords: ['Тис', 'Защита', 'Выносливость', 'Связь миров'],
+                link: 'rune-eihwaz.html'
+            },
+            'ᛈ': {
+                name: 'Перто',
+                nameEn: 'Perthro',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Перто — руна тайны и судьбы. Люди-Перто обладают развитой интуицией и чувствуют невидимые нити судьбы. Они доверяют жизни и умеют принимать неизбежное.',
+                keywords: ['Тайна', 'Жребий', 'Судьба', 'Интуиция'],
+                link: 'rune-perthro.html'
+            },
+            'ᛉ': {
+                name: 'Альгиз',
+                nameEn: 'Algiz',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Альгиз — руна защиты и интуиции. Люди-Альгиз — прирождённые защитники, они чувствуют опасность на расстоянии и всегда готовы прийти на помощь. Их интуиция редко их подводит.',
+                keywords: ['Лось', 'Защита', 'Интуиция', 'Охрана'],
+                link: 'rune-algiz.html'
+            },
+            'ᛋ': {
+                name: 'Соулу',
+                nameEn: 'Sowilo',
+                att: 'Второй атт · Хеймдалль',
+                meaning: 'Соулу — руна солнца и победы. Люди-Соулу — прирождённые лидеры, они несут свет и вдохновение окружающим. Их сила — в их энергии и вере в себя.',
+                keywords: ['Солнце', 'Победа', 'Целостность', 'Энергия'],
+                link: 'rune-sowilo.html'
+            },
+            'ᛏ': {
+                name: 'Тейваз',
+                nameEn: 'Tiwaz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Тейваз — руна чести и справедливости. Люди-Тейваз — благородные воины, они всегда готовы встать на защиту слабых и отстаивать правду. Их девиз — честь превыше всего.',
+                keywords: ['Тюр', 'Честь', 'Победа', 'Справедливость'],
+                link: 'rune-tiwaz.html'
+            },
+            'ᛒ': {
+                name: 'Беркана',
+                nameEn: 'Berkana',
+                att: 'Третий атт · Тюр',
+                meaning: 'Беркана — руна роста и заботы. Люди-Беркана — заботливые и чуткие, они умеют создавать уют и поддерживать тех, кто рядом. Их сила — в любви и принятии.',
+                keywords: ['Берёза', 'Рост', 'Забота', 'Семья'],
+                link: 'rune-berkana.html'
+            },
+            'ᛖ': {
+                name: 'Эхваз',
+                nameEn: 'Ehwaz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Эхваз — руна движения и доверия. Люди-Эхваз — верные спутники, они умеют доверять и идти по жизни в гармонии с окружающими. Их путь — это путь партнёрства и взаимопонимания.',
+                keywords: ['Конь', 'Движение', 'Доверие', 'Гармония'],
+                link: 'rune-ehwaz.html'
+            },
+            'ᛗ': {
+                name: 'Манназ',
+                nameEn: 'Mannaz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Манназ — руна человека и общества. Люди-Манназ — прирождённые коммуникаторы, они умеют находить общий язык с людьми и строить сообщества. Их сила — в единстве.',
+                keywords: ['Человек', 'Общество', 'Разум', 'Взаимодействие'],
+                link: 'rune-mannaz.html'
+            },
+            'ᛚ': {
+                name: 'Лагуз',
+                nameEn: 'Laguz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Лагуз — руна воды и интуиции. Люди-Лагуз — чувствительные и восприимчивые, они умеют плыть по течению жизни и доверять своей интуиции. Их стихия — поток и движение.',
+                keywords: ['Вода', 'Интуиция', 'Поток', 'Эмоции'],
+                link: 'rune-laguz.html'
+            },
+            'ᛝ': {
+                name: 'Ингуз',
+                nameEn: 'Inguz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Ингуз — руна начала и потенциала. Люди-Ингуз — вечные начинатели, они полны идей и энергии для их воплощения. Их сила — в вере в будущее и умении начинать с нуля.',
+                keywords: ['Инг', 'Начало', 'Потенциал', 'Плодородие'],
+                link: 'rune-inguz.html'
+            },
+            'ᛟ': {
+                name: 'Отал',
+                nameEn: 'Othala',
+                att: 'Третий атт · Тюр',
+                meaning: 'Отал — руна родины и наследия. Люди-Отал — хранители традиций, они ценят свои корни и передают знания следующим поколениям. Их сила — в их семье и истории.',
+                keywords: ['Родина', 'Наследие', 'Дом', 'Корни'],
+                link: 'rune-othala.html'
+            },
+            'ᛞ': {
+                name: 'Дагаз',
+                nameEn: 'Dagaz',
+                att: 'Третий атт · Тюр',
+                meaning: 'Дагаз — руна рассвета и трансформации. Люди-Дагаз — те, кто всегда видит свет в конце тоннеля. Они умеют проходить через тьму и выходить к новому началу, вдохновляя других.',
+                keywords: ['Рассвет', 'Прорыв', 'Трансформация', 'Новое начало'],
+                link: 'rune-dagaz.html'
+            }
+        };
+
+        // ============================================================
+        // ===== ОПРЕДЕЛЕНИЕ РУНЫ ПО ДАТЕ =====
+        // ============================================================
+
+        // Сопоставление дней с рунами (циклично)
+        const runeSymbols = [
+            'ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ',
+            'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛋ',
+            'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛝ', 'ᛟ', 'ᛞ'
+        ];
+
+        function getRuneForDate(date) {
+            const start = new Date(1900, 0, 1); // 1 января 1900
+            const diff = Math.floor((date - start) / (1000 * 60 * 60 * 24));
+            const index = diff % 24;
+            return runeSymbols[index];
+        }
+
+        // ============================================================
+        // ===== ОБРАБОТКА ФОРМЫ =====
+        // ============================================================
+
+        const input = document.getElementById('birthdate');
+        const button = document.getElementById('showHoroscope');
+        const resultDiv = document.getElementById('result');
+
+        // Устанавливаем сегодняшнюю дату как значение по умолчанию
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        input.value = `${year}-${month}-${day}`;
+
+        button.addEventListener('click', function() {
+            const date = new Date(input.value);
+            if (isNaN(date.getTime())) {
+                alert('Пожалуйста, введите корректную дату!');
+                return;
+            }
+
+            const symbol = getRuneForDate(date);
+            const data = runeData[symbol];
+
+            if (!data) {
+                alert('Ошибка: данные для руны не найдены.');
+                return;
+            }
+
+            // Заполняем результат
+            document.getElementById('resultSymbol').textContent = symbol;
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('resultNameEn').textContent = data.nameEn;
+            document.getElementById('resultAtt').textContent = data.att;
+            document.getElementById('resultMeaning').textContent = data.meaning;
+
+            // Ключевые слова
+            const keywordsContainer = document.getElementById('resultKeywords');
+            keywordsContainer.innerHTML = '';
+            data.keywords.forEach(keyword => {
+                const span = document.createElement('span');
+                span.textContent = keyword;
+                keywordsContainer.appendChild(span);
+            });
+
+            // Ссылка на страницу руны
+            document.getElementById('resultLink').href = data.link;
+
+            // Показываем результат
+            resultDiv.classList.add('show');
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Автоматически показываем результат для сегодняшней даты
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                button.click();
+            }, 300);
+        });
+    </script>
+
+</body>
+</html>
